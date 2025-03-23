@@ -20,7 +20,7 @@ const isUnitsRangeIsFine = (units, num) => {
     throw new Error("UNITS LENGTH ARE NOT ENOUGH");
   }
 
-  if (!units.some(isValidUnit)) {
+  if (!units.every(isValidUnit)) {
     throw new Error("Unsupported Units");
   }
 
@@ -56,6 +56,8 @@ const main = async () => {
   const reader = conn.readable.getReader();
   handler(writter, reader, ["km", "m"], 78, { result: 78000 });
   handler(writter, reader, ["km", "m"], 8, { result: 8000 });
+  handler(writter, reader, ["km", "m", "pound"], 89, { default: 7900 });
+  handler(writter, reader, ["km", "ms"], 89, { default: 7900 });
   // handler(writter, reader, ["pounds", "m"], 78, 78000);
 };
 
