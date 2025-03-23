@@ -11,25 +11,27 @@ const stringify = (objs) => JSON.stringify(objs);
 const jsonObject = (objs) => JSON.parse(objs);
 
 const conversion = (obj) => {
-  switch (obj) {
-    case obj.from === "Km" && obj.to === "m":
-      return { result: obj.value * 1000 };
+  if (obj.from === "km" && obj.to === "m") {
+    return { result: obj.value * 1000 };
   }
+  return { default: 5000 };
 };
 
 const JsonStringify = new TransformStream({
   transform(chunk, controller) {
     const obj = jsonObject(chunk);
     const resolve = conversion(obj);
-    console.log("jsonObject", obj);
-    const string = stringify("78000");
+
+    const string = stringify(resolve);
     controller.enqueue(string);
   },
 });
 
 const operationalStream = new TransformStream({
   transform(chunk, controller) {
+    console.log("data has to write from server to client ...");
     const encodedData = new TextEncoder().encode(chunk);
+
     controller.enqueue(encodedData);
   },
 });
